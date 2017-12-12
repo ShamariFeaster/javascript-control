@@ -1,12 +1,12 @@
 const icon_disabled = {128: "js_disabled.png"}
 const icon_whitelisted = {128: "js.png"}
 
-function is_whitelisted(dict, host) {
-    let whitelist_js = false
+function is_blacklisted(dict, host) {
+    let blacklist_js = false
     if (dict[host] !== undefined) {
-        whitelist_js = dict[host]
+        blacklist_js = dict[host]
     }
-    return whitelist_js
+    return blacklist_js
 }
 
 function add_csp_nojs_header(response) {
@@ -14,8 +14,8 @@ function add_csp_nojs_header(response) {
     let headers = response.responseHeaders
     return new Promise( (resolve) => {
         browser.storage.local.get(host).then(item => {
-            let whitelist_js = is_whitelisted(item, host)
-            if (!whitelist_js) {
+            let blacklist_js = is_blacklisted(item, host)
+            if (blacklist_js) {
                 var new_csp = {name: "Content-Security-Policy", value: "script-src 'none';"}
                 headers.push(new_csp)
             }
@@ -35,15 +35,15 @@ browser.tabs.onUpdated.addListener((id, changeInfo) => {
     if (changeInfo.url) {
         let host = new URL(changeInfo.url).hostname
         browser.storage.local.get(host).then(item => {
-            let whitelist_js = is_whitelisted(item, host)
+            let blacklist_js = is_blacklisted(item, host)
 
-            let path_icon = whitelist_js ? icon_whitelisted : icon_disabled
+            let path_icon = blacklist_js ? icon_whitelisted : icon_disabled
             browser.pageAction.setIcon({
                 path: path_icon,
                 tabId: id
             })
 
-            let word = whitelist_js ? "Disable" : "Enable"
+            let word = blacklist_js ? "Enable" : "Disable"
             browser.pageAction.setTitle({
                 title: word + " Javascript",
                 tabId: id
@@ -56,9 +56,9 @@ browser.tabs.onUpdated.addListener((id, changeInfo) => {
 browser.pageAction.onClicked.addListener(function(tab) {
     let host = new URL(tab.url).hostname
     browser.storage.local.get(host).then(item => {
-        let whitelist_js = is_whitelisted(item, host)
+        let blacklist_js = is_blacklisted(item, host)
         let to_store = {}
-        to_store[host] = !whitelist_js
+        to_store[host] = !blacklist_js
         browser.storage.local.set(to_store).then( function() {
             browser.tabs.reload()
         })
