@@ -1,9 +1,12 @@
 # ![icon](js.png) ![icon](js_disabled.png) Javascript Control
-This WebExtension adds a button in the url bar that allows you to disable or
-enable Javascript quickly. It remembers the setting per-site, and disables
-Javascript by default.
+Fork of Erwan Ameil's [Javascript Control](https://github.com/idlewan/javascript-control)
 
-https://addons.mozilla.org/en-US/firefox/addon/javascript-control/
+This WebExtension adds a button in the url bar that allows you to disable or
+re-enable Javascript quickly. It remembers the setting per-site. Differs from 
+the original by providing option opt-out of Javascript (meaning defaults to
+JS on) rtaher than opt-in (which the original add-on does). For former Chrome
+users this provides a more familiar JS-blocking workflow.
+
 
 # To Not Do (yet)
 - Fix icon for Firefox on Android. Waiting on setIcon support and
