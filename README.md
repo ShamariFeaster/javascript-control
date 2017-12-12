@@ -7,6 +7,8 @@ the original by providing option opt-out of Javascript (meaning defaults to
 JS on) rtaher than opt-in (which the original add-on does). For former Chrome
 users this provides a more familiar JS-blocking workflow.
 
+Install using .xpi file using [these](https://accessfirefox.org/Install_Addon_Manually.php)
+instuctions.
 
 # To Not Do (yet)
 - Fix icon for Firefox on Android. Waiting on setIcon support and
